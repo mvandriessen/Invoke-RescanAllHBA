@@ -28,6 +28,23 @@ Function Invoke-RescanAllHBA
         [Parameter(Mandatory = $false)][string]$Cluster
     )
     
+    Function Write-Log 
+    {
+        #Function written by William Lam @lamw
+        # www.virtuallyghetto.com
+        param(
+            [Parameter(Mandatory = $true)]
+            [String]$message
+        )
+    
+        $timeStamp = Get-Date -Format "dd-MM-yyyy_HH:mm:ss"
+    
+        Write-Host -NoNewline -ForegroundColor White "[$timestamp]"
+        Write-Host -ForegroundColor Green " $message"
+        $logMessage = "[$timeStamp] $message"
+        $logMessage | Out-File -Append -LiteralPath "C:\temp\$($verboseLogFile)"
+    }
+
     if (!(Get-Module -Name VMware.VimAutomation.Core) -and (Get-Module -ListAvailable -Name VMware.VimAutomation.Core)) 
     {
         Import-Module -Name VMware.VimAutomation.Core -ErrorAction SilentlyContinue
